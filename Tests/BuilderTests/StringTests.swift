@@ -54,6 +54,16 @@ final class StringTests: XCTestCase {
         XCTAssertNil(sut)
     }
 
+    func testBuilderThrowableBuilder() {
+        XCTAssertThrowsError(try throwableBuilderWithThrow())
+        XCTAssertEqual(throwableBuilderWithoutThrow(), value)
+        XCTAssertThrowsError(try throwableBuilderOptionalWithThrow())
+        XCTAssertNil(throwableBuilderOptionalWithoutThrow())
+    }
+
+}
+
+extension StringTests {
     var error: Error {
         NSError(domain: Bundle.main.bundleIdentifier ?? "", code: 0)
     }
@@ -73,12 +83,4 @@ final class StringTests: XCTestCase {
     func throwableBuilderOptionalWithoutThrow() -> String? {
         try? buildWithError(String(value)) { _ in throw error }
     }
-
-    func testBuilderThrowableBuilder() {
-        XCTAssertThrowsError(try throwableBuilderWithThrow())
-        XCTAssertEqual(throwableBuilderWithoutThrow(), value)
-        XCTAssertThrowsError(try throwableBuilderOptionalWithThrow())
-        XCTAssertNil(throwableBuilderOptionalWithoutThrow())
-    }
-
 }
